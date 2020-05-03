@@ -1,0 +1,22 @@
+<div class="payment-filter-content">
+    <h3>Filters :</h3>
+    <mat-form-field class="start-date">
+      <mat-label>Select a start date</mat-label>
+      <input matInput [(ngModel)]="filterObject.startDate" [matDatepicker]="startdatepicker">
+      <mat-datepicker-toggle matSuffix [for]="startdatepicker"></mat-datepicker-toggle>
+      <mat-datepicker #startdatepicker startView="month" [startAt]="startDate"></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="end-date">
+      <mat-label>Select a end date</mat-label>
+      <input matInput [(ngModel)]="filterObject.endDate" [matDatepicker]="enddatepicker">
+      <mat-datepicker-toggle matSuffix [for]="enddatepicker"></mat-datepicker-toggle>
+      <mat-datepicker #enddatepicker startView="month"></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Select a category</mat-label>
+      <mat-select [(ngModel)]="filterObject.category">
+        <mat-option *ngFor="let c of paymentService.getCategories()" [value]="c">{{c}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button (click)="applyFilters()" mat-button color="primary">Go</button>
+  </div>

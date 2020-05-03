@@ -9,14 +9,4 @@ import {MatListModule} from '@angular/material/list';
 })
 export class AppComponent {
   title = 'AccountManager';
-  
-  props: {}
-  
-  constructor(paymentService: PaymentService) {
-    
-    this.props = {
-      billingRows : paymentService.getPayments(),
-      categories: paymentService.getCategories() }
-  }
-
 }

@@ -1,7 +1,11 @@
 interface BillingRow {
-    id: string,
+    identifier: string,
+    accountId: number,
+    operationDate: string,
+    valueDate: string,
+    occurence: number,
     label: String,
-    value: number,
+    amount: number,
     billingDate: String,
     category: (String | undefined)
 }

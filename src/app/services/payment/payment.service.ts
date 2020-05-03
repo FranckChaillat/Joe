@@ -1,19 +1,27 @@
-import { Injectable } from '@angular/core';
-import * as uuid from 'uuid';
+import { Injectable, Inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaymentService {
 
-  constructor() { }
+  constructor(@Inject('configuration') private config: AppConfig, private http: HttpClient) { }
 
-  getPayments(): BillingRow[] {
-    return [
-      {id: uuid.v4(), value: 10, label:  "gros tacos", billingDate: "2019-12-05", category: "others"},
-      {id: uuid.v4(), value: 620, label: "loyer", billingDate: "2019-11-05", category: "food"},
-      {id: uuid.v4(), value: 1900, label: "voiture", billingDate: "2019-01-30", category: "car"}
-    ]
+  getPayments(accountId: Number, startDate?: String, endDate?: String, category?: String) {
+    let baseUri = `${this.config.apiEndpoint}/joe/payments?accountId=${accountId}`
+    let queryFilters = [] 
+    if(startDate != undefined) {
+      queryFilters.push(`startDate=${startDate}`)
+    }
+    if(endDate != undefined) {
+      queryFilters.push(`endDate=${endDate}`)
+    }
+    if(category != undefined) {
+      queryFilters.push(`categories=${category}`)
+    }
+    let fullUri = `${baseUri}${(queryFilters.length > 0) ? `&${queryFilters.join("&")}` : ""}`
+    return this.http.get<BillingRow[]>(fullUri)
   }
 
 
@@ -22,6 +30,9 @@ export class PaymentService {
   }
 
   updateCategory(id: string, newCategory : string) {
-    
+    let uri = `${this.config.apiEndpoint}/joe/payments/${id}`
+    let body = { "accountId": 1, "category": newCategory }
+    console.log(uri)
+    return this.http.put<any>(uri, body= body)
   }
 }
