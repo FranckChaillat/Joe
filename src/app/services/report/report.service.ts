@@ -4,12 +4,12 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class PaymentService {
+export class ReportService {
 
   constructor(@Inject('configuration') private config: AppConfig, private http: HttpClient) { }
 
-  getPayments(accountId: Number, startDate?: String, endDate?: String, category?: String) {
-    let baseUri = `${this.config.apiEndpoint}/joe/payments?accountId=${accountId}`
+  getReports(accountId: Number, startDate?: String, endDate?:String, category?: String) {
+    let baseUri = `${this.config.apiEndpoint}/joe/reports?accountId=${accountId}`
     let queryFilters = [] 
     if(startDate != undefined) {
       queryFilters.push(`startDate=${startDate}`)
@@ -21,13 +21,8 @@ export class PaymentService {
       queryFilters.push(`categories=${category}`)
     }
     let fullUri = `${baseUri}${(queryFilters.length > 0) ? `&${queryFilters.join("&")}` : ""}`
-    return this.http.get<BillingRow[]>(fullUri)
+    console.log(fullUri)
+    return this.http.get<Report>(fullUri)
   }
 
-  updateCategory(id: string, newCategory : string) {
-    let uri = `${this.config.apiEndpoint}/joe/payments/${id}`
-    let body = { "accountId": 1, "category": newCategory }
-    console.log(uri)
-    return this.http.put<any>(uri, body= body)
-  }
 }

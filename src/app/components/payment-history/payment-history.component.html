@@ -1,9 +1,12 @@
 <html>
-  <div class="filters">
-     <app-payment-filter (filterApply)="applyFilters($event)"></app-payment-filter>
+  <div class="header">
+    <h1 class="title">Payments history</h1>
+    <div class="filters">
+      <app-payment-filter (filterApply)="applyFilters($event)"></app-payment-filter>
+    </div> 
   </div>
   <div class="history-table">
-    <mat-table #table [dataSource]="displayedRows">
+    <mat-table #table [dataSource]="datasource">
       <ng-container matColumnDef="billingDate">
         <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.operationDate}} </mat-cell>
@@ -21,7 +24,7 @@
         <mat-cell *matCellDef="let element">
           <mat-form-field>
             <mat-select [(value)]="element.category" placeholder={{element.category}} (selectionChange)="update($event.value, element.identifier)">
-              <mat-option *ngFor="let c of paymentService.getCategories()" [value]="c">{{c}}</mat-option>
+              <mat-option *ngFor="let c of categories" [value]="c">{{c}}</mat-option>
             </mat-select>
           </mat-form-field>
         </mat-cell>
@@ -29,5 +32,6 @@
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
+     <mat-paginator [pageSize]="3" [pageSizeOptions]="[3, 5, 10]" showFirstLastButtons></mat-paginator>
   </div>
 </html>

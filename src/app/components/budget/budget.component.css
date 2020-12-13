@@ -1,0 +1,29 @@
+
+.filters {
+    width: 80%;
+    height: 200px;
+    margin-top: 3%;
+    margin-left: 4%;
+    float: left;
+}
+
+
+.budget-display {
+    float: left;
+    width: 50%;
+    margin-left: 10%;
+    margin-top: 4%;    
+}
+
+.budget-add-button {
+    float: left;
+    margin-top: 5%;
+    margin-left: 5%;
+}
+
+
+.header h1 {
+    font-size: xx-large;
+    margin-left: 3%;
+    font-family: Arial, Helvetica, sans-serif;
+}

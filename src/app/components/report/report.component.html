@@ -1,0 +1,31 @@
+<html>
+    <div class="header">
+        <h1 class="title">Financial report</h1>
+        <div class="filters">    
+            <app-payment-filter (filterApply)="applyFilters($event)"></app-payment-filter>
+        </div>
+    </div>
+    <div class="calculator-content">
+        <p class="stat-tittle">Total output:</p> 
+        <p class="sum">{{sum}}</p>
+        <p class="stat-tittle">Transaction count:</p>
+        <p class="count">{{count}}</p>
+     </div>
+
+     <div class="chart-report">
+        <ngx-charts-pie-chart
+        [view]="view"
+        [scheme]="colorScheme"
+        [results]="single"
+        [gradient]="gradient"
+        [legend]="showLegend"
+        [legendPosition]="legendPosition"
+        [labels]="showLabels"
+        [doughnut]="isDoughnut"
+        (select)="onSelect($event)"
+        (activate)="onActivate($event)"
+        (deactivate)="onDeactivate($event)"
+        >
+      </ngx-charts-pie-chart>
+     </div>
+</html>

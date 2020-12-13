@@ -1,1 +1,31 @@
-<p>budget works!</p>
+<html>
+
+<div class="header">
+  <h1 class="title">Budget management</h1>
+</div>
+<div class="budget-management">
+    <div class="budget-display">
+        <mat-table #table [dataSource]="datasource">
+            <ng-container matColumnDef="label">
+              <mat-header-cell *matHeaderCellDef> Label </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.label}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="description">
+              <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.description}} </mat-cell>
+            </ng-container> 
+            <ng-container matColumnDef="amount">
+              <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.amount}} </mat-cell>
+            </ng-container> 
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>  
+    </div>
+    <div class="budget-add-button">
+      <button mat-fab color="primary" (click)="openDialog()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+</div>
+</html>
