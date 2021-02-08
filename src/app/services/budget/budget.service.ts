@@ -10,14 +10,15 @@ export class BudgetService {
 
   constructor(@Inject('configuration') private config: AppConfig, private http: HttpClient) { }
 
-  getBudgets() {
-    let url = `${this.config.apiEndpoint}/joe/budgets/${1}`
+  getBudgets(accountId: Number) {
+    let url = `${this.config.apiEndpoint}/joe/budgets?accountId=${accountId}`
     return this.http.get<BudgetItem[]>(url)
   }
 
-  addBudgetItem(categoryLabel: String, categoryDescription: String, amount ?: Number) {
-    let url = `${this.config.apiEndpoint}/joe/budgets/${1}`
-    let body = {"label": categoryLabel, "description": categoryDescription, "amount": amount}
+  addBudgetItem(accountId: Number, categoryLabel: String, categoryDescription: String, amount ?: Number) {
+    let url = `${this.config.apiEndpoint}/joe/budgets`
+    let body = {"accountId": accountId, "label": categoryLabel, "description": categoryDescription, "amount": amount}
+    console.log(body)
     return this.http.post<any>(url, body= body)
   }
 

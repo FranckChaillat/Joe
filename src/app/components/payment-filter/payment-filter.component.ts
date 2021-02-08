@@ -16,7 +16,7 @@ export class PaymentFilterComponent implements OnInit {
   categories: String[] = ["coucou"]
 
   constructor(private budgetService: BudgetService, private datepipe: DatePipe) {
-    this.budgetService.getBudgets()
+    this.budgetService.getBudgets(1)
     .subscribe((value) => {
       this.categories = value.map((e) => e.label)
     })

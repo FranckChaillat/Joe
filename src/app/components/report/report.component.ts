@@ -15,31 +15,40 @@ export class ReportComponent implements OnInit {
   public count: String = "N/C"
   private reportService: ReportService
 
-
-  private single: any[] = [];
-  view: any[] = [700, 400];
-
-  // options
-  gradient: boolean = true;
-  showLegend: boolean = false;
+  
+  // line data
+  lineData: any[]
+  view: any[] = [700, 300];
+  legend: boolean = true;
   showLabels: boolean = true;
-  isDoughnut: boolean = false;
-  legendPosition: string = "below";
-
+  animations: boolean = true;
+  xAxis: boolean = true;
+  yAxis: boolean = true;
+  showYAxisLabel: boolean = true;
+  showXAxisLabel: boolean = true;
+  xAxisLabel: string = 'Days';
+  yAxisLabel: string = 'Balance';
+  timeline: boolean = true;
   colorScheme = {
-    domain: ["#5AA454", "#A10A28", "#C7B42C", "#AAAAAA"]
+    domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
   };
 
+  // pie chart data
+  private pieChartData: any[] = [];
+  piechartView: any[] = [700, 400];
+  pieChartGradient: boolean = true;
+  showLegend: boolean = false;
+  isDoughnut: boolean = false;
+  legendPosition: string = "below";
+  pieChartColors = { domain: ["#5AA454", "#A10A28", "#C7B42C", "#AAAAAA"]};
+
   onSelect(data): void {
-    console.log("Item clicked", JSON.parse(JSON.stringify(data)));
   }
 
   onActivate(data): void {
-    console.log("Activate", JSON.parse(JSON.stringify(data)));
   }
 
   onDeactivate(data): void {
-    console.log("Deactivate", JSON.parse(JSON.stringify(data)));
   }
 
   constructor(service: ReportService) {
@@ -50,14 +59,19 @@ export class ReportComponent implements OnInit {
     .subscribe((value) => {
       this.sum = value.total.toString()
       this.count = value.totalTransactionCount.toString()
-      this.single = value.reportItems.map((item) => { 
+      this.pieChartData = value.reportItems.map((item) => { 
         return {
           "name": item.category, 
           "value": item.amount
         }
       })
-      console.log(this.single)
-      Object.assign(this, this.single);
+      Object.assign(this, this.pieChartData);
+    })
+
+    this.reportService.getBalanceHistoryReport(1, dates[0], dates[1])
+    .subscribe((value) => {
+      this.lineData = this.getLineData(value)
+      Object.assign(this, this.lineData);
     })
   }
 
@@ -71,13 +85,18 @@ export class ReportComponent implements OnInit {
         this.count = value.totalTransactionCount.toString()
 
         //TODO: factoriser
-        this.single = value.reportItems.map((item) => {
+        this.pieChartData = value.reportItems.map((item) => {
           return {
             "name": item.category == null ? 'undefined' : item.category, 
             "value": item.amount
           }
         })
-        console.log(this.single)
+      })
+
+      this.reportService.getBalanceHistoryReport(1, filterObject.startDate, filterObject.endDate)
+      .subscribe((value) => {
+        this.lineData = this.getLineData(value)
+        Object.assign(this, this.lineData);
       })
   }
 
@@ -87,6 +106,22 @@ export class ReportComponent implements OnInit {
     let year = dateObj.getUTCFullYear();
     var day = dateObj.getUTCDay();
     return [year + '-' + month + '-01', year + '-' + month + '-' + day]
+  }
+
+  private getLineData(balanceHistory: BalanceHistory[]) {
+    let values = balanceHistory.map((item) => {
+      return {
+        "name": item.date,
+        "value": item.balance
+      }
+    })
+
+    return [
+      {
+        "name": "Balance",
+        "series": values
+     }
+    ]
   }
 
 }

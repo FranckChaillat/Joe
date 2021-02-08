@@ -25,4 +25,18 @@ export class ReportService {
     return this.http.get<Report>(fullUri)
   }
 
+  getBalanceHistoryReport(accountId: Number, startDate?: String, endDate?:String) {
+    let baseUri = `${this.config.apiEndpoint}/joe/reports/balance?accountId=${accountId}`
+    let queryFilters = [] 
+    if(startDate != undefined) {
+      queryFilters.push(`startDate=${startDate}`)
+    }
+    if(endDate != undefined) {
+      queryFilters.push(`endDate=${endDate}`)
+    }
+    let fullUri = `${baseUri}${(queryFilters.length > 0) ? `&${queryFilters.join("&")}` : ""}`
+
+    return this.http.get<BalanceHistory[]>(fullUri)
+  }
+
 }

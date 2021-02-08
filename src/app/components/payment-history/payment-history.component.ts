@@ -23,7 +23,7 @@ export class PaymentHistoryComponent implements OnInit {
     this.paymentService = service
     this.budgetService = budgetService
 
-    this.budgetService.getBudgets()
+    this.budgetService.getBudgets(1)
     .subscribe((value) => {
       this.categories = value.map((e) => e.label)
     })

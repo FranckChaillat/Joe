@@ -20,8 +20,15 @@
     float: left;
 }
 
-.chart-report {
-    margin-left: 40%;
+
+.category-report {
+    margin-top: 10%;
+    float: right;
+}
+
+.balance-history-report {
+    margin-top: 5%;
+    float: left;
 }
 
 .stat-tittle {

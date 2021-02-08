@@ -14,13 +14,13 @@ import { BudgetItem } from 'src/app/services/budget/budgetItem';
 export class BudgetComponent implements OnInit {
 
   private datasource : MatTableDataSource<BudgetItem>
-  private budgetObject: BudgetItem
+  private budgetObject: any
 
   displayedColumns = ['label', 'description', 'amount'];
 
 
   constructor(public dialog: MatDialog, private service: BudgetService) {
-    this.service.getBudgets()
+    this.service.getBudgets(1)
     .subscribe((value) => {
       this.datasource = new MatTableDataSource<BudgetItem>(value)
     })
@@ -29,7 +29,8 @@ export class BudgetComponent implements OnInit {
   openDialog(): void {
     this.budgetObject = {
       "label" : "",
-      "description": ""
+      "description": "",
+      "amount": ""
     }
     const dialogRef = this.dialog.open(BudgetModalComponent, 
       { width: '350px',
@@ -37,9 +38,9 @@ export class BudgetComponent implements OnInit {
       });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      if(result) {
-        this.service.addBudgetItem(result.label, result.description)
+     let rx = new RegExp('^\\d*$')
+      if(result && rx.test(result.amount)) {
+        this.service.addBudgetItem(1, result.label, result.description, Number(result.amount))
         .subscribe((response) => console.log(response))
       }
     });
